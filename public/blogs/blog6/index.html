@@ -40,7 +40,7 @@
 
             <!-- Header -->
     <header id="header" class="alt">
-        <a href="/" class="logo"><strong>Forty</strong> <span>By HTML5 Up</span></a>
+        <a href="/" class="logo"><strong>Rebecca</strong> <span>By HTML5 Up</span></a>
         <nav>
             <a href="#menu">Menu</a>
         </nav>
@@ -80,7 +80,7 @@
                                 <h1>Risk-Return of DJIA stocks</h1>
                             </header>
                             
-                                <span class="image main"><img src="/img/blogs/pic99.jpg" alt="" /></span>
+                                <span class="image main"><img src="/img/blogs/pic01.jpg" alt="" /></span>
                             
                             
 
@@ -172,7 +172,7 @@ myStocks_returns_annual &lt;- myStocks %&gt;%
                cols = c(nested.col))</code></pre>
 <pre class="r"><code>#visualise monthly returns since 2010, for each of the 30 DJIA stocks
 myStocks_returns_monthly %&gt;% 
-  filter(symbol != &quot;^VIX&quot;, symbol != &quot;SPY&quot;) %&gt;% 
+  filter(symbol != &quot;^VIX&quot;, symbol != &quot;SPY&quot;, symbol !=&quot;DJI&quot;) %&gt;% 
   filter(date &gt;= &quot;2010-01-01&quot;) %&gt;% 
   ggplot(aes(x = monthly_returns)) +
   geom_density(aes(colour = symbol), alpha = 1) +

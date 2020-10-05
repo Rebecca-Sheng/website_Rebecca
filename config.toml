@@ -1,5 +1,5 @@
 # Site settings
-baseURL = "http://example.org/"
+baseURL = "http://rebeccawebsite.netlify.app/"
 languageCode = "en-us"
 title = "Rebecca"
 theme = "forty"
@@ -37,7 +37,7 @@ disqusShortname = ""
 
   # Navigation Section
   [params.navigation]
-    title = "Forty"
+    title = "Rebecca"
     subtitle = "By HTML5 Up"
     menu = "Menu"
     # Optional logo as brand stored in img/
@@ -94,7 +94,7 @@ disqusShortname = ""
     [[params.tiles.showcase]]
       title = "DJIA Risk/Return"
       subtitle = "Risk-Return of DJIA stocks"
-      image = "pic99.jpg"
+      image = "pic01.jpg"
       url = "blogs/blog6"
 
     [[params.tiles.showcase]]

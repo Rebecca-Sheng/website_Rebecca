@@ -5,7 +5,7 @@ categories:
 date: "2020-10-04"
 description: "Risk-Return of DJIA stocks"
 draft: false
-image: pic99.jpg
+image: pic01.jpg
 keywords: ""
 slug: blog6
 title: Risk-Return of DJIA stocks
@@ -100,7 +100,7 @@ myStocks_returns_annual &lt;- myStocks %&gt;%
                cols = c(nested.col))</code></pre>
 <pre class="r"><code>#visualise monthly returns since 2010, for each of the 30 DJIA stocks
 myStocks_returns_monthly %&gt;% 
-  filter(symbol != &quot;^VIX&quot;, symbol != &quot;SPY&quot;) %&gt;% 
+  filter(symbol != &quot;^VIX&quot;, symbol != &quot;SPY&quot;, symbol !=&quot;DJI&quot;) %&gt;% 
   filter(date &gt;= &quot;2010-01-01&quot;) %&gt;% 
   ggplot(aes(x = monthly_returns)) +
   geom_density(aes(colour = symbol), alpha = 1) +
