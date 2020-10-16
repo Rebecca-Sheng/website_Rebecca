@@ -1,28 +1,102 @@
 ---
-title: "Untitled"
-output: html_document
+categories:
+- ""
+- ""
+date: "2020-10-16"
+description: "Value vs Growth stocks"
+draft: false
+image: valuegrowth.jpg
+keywords: ""
+slug: blog7
+title: Value vs Growth stocks
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center")
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(rvest)    # scrape websites
+library(purrr)  
+library(lubridate) #to handle dates
+library(knitr)
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+# Value vs Growth Stocks
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+## A Performance Analysis of Two Different Types of Stocks
+  
+> Until the last decade, it was a conventional consensus, that value investing outperformed growth investing, especially in long-term holding periods. 
+
+From [Kenneth R. French’s personal website](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html), we can get annual and monthly returns of different portfolios constructed according to their BE/ME values from 1927 to 2020. In order to compare the performances of value and growth investment, we choose the portfolio with the highest 10% BE/ME value as a representative of value stocks, and portfolio with the lowest 10% BE/ME value as a representative of growth stocks.
+
+To begin with, we first look across the entire period (1927-2020), by visualizing annual returns of growth and value stocks.
+
+```{r, load_data_annul, warning=FALSE}
+portfolio_annually <-read_csv(here::here("data", "Portfolios_Formed_on_BE-ME_annually.csv"))
+
+glimpse(portfolio_annually)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r, plot_for_portfolio_annual, warning = FALSE}
+plot_portfolio_annual <- ggplot(data=portfolio_annually,
+                         aes(x=year,
+                             y=annual_return/100,
+                             color = group))+
+  geom_line()+
+  scale_x_continuous(breaks=c(1930,1940,1950,1960,1970,1980,1990,2000,2010,2020))+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()+
+  labs(title="Value vs Growth stocks from 1927 to 2020",
+       x="Year",
+       y="Yearly Return")+
+  theme_minimal(base_size=5)+
+  coord_fixed(ratio = 25)
+
+ggsave("portfolio_annual.jpg",
+      plot=plot_portfolio_annual, 
+       height =10, width=20,)
+
+#knitr::include_graphics("portfolio_annual.jpg")
+plot_portfolio_annual
+
+```
+
+From the graph, we can intuitively tell that value stocks earn higher return and growth stocks have lager fluctuation. However, we cannot demonstrate whether the differences in average and volatility of returns are significant, or just result from random errors, until we do t-test and F-test for their mean and standard deviation.
+
+```{r, significance_test_for_mean_sd}
+
+t.test(annual_return ~ group, data = portfolio_annually)
+var.test(annual_return ~ group, data = portfolio_annually)
+
+```
+
+The t-test is aimed to find out whether the difference in average monthly returns between growth stocks and value stocks is significant. Result shows that the 95 percent confidence interval contains 0 and p-value is 90%, much larger than the confidence level which is 5%. As a result, we don’t reject the null hypothesis that true difference in mean is equal to 0. Although the average return of value stocks is higher in these years, we cannot admit this difference from the angle of statistics.
+
+On the other hand, the F-test is aimed to discover the difference in variance (volatility) between growth and value stocks. Results show that 95 percent confidence interval is always below 1 and p-value is smaller than 5%, so we reject the null hypothesis and accept the alternative hypothesis that true ratio of their variance is not equal to 1. This means we can confirm that growth stocks have higher volatility and thus high risk than value stocks.
+
+Combining the above results, we can say that generally from 1927 to 2020, value investment dominated growth investment, because it generated the same return but with lower risk.

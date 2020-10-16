@@ -37,7 +37,7 @@ disqusShortname = ""
 
   # Navigation Section
   [params.navigation]
-    title = "Rebecca me"
+    title = "Rebecca"
     subtitle = "LBS MFA2021"
     menu = "Menu"
     # Optional logo as brand stored in img/
@@ -100,14 +100,14 @@ disqusShortname = ""
     [[params.tiles.showcase]]
       title = "DJIA Risk/Return"
       subtitle = "Risk-Return of DJIA stocks"
-      image = "pic02.jpg"
+      image = "dowjones.jpg"
       url = "blogs/blog6"
 
     [[params.tiles.showcase]]
-      title = "Magna"
-      subtitle = "Lorem Etiam Nullam"
-      image = "pic03.jpg"
-      url = "blogs/magna"
+      title = "Value vs Growth stocks"
+      subtitle = "A Performance Analysis of Two Different Types of Stocks"
+      image = "stock1.jpg"
+      url = "blogs/blog7"
 
     [[params.tiles.showcase]]
       title = "Ipsum"

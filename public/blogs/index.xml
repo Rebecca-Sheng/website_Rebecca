@@ -18,6 +18,16 @@
     </item>
     
     <item>
+      <title>Value vs Growth stocks</title>
+      <link>/blogs/blog7/</link>
+      <pubDate>Fri, 16 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/blog7/</guid>
+      <description>Value vs Growth StocksA Performance Analysis of Two Different Types of StocksUntil the last decade, it was a conventional consensus, that value investing outperformed growth investing, especially in long-term holding periods.
+From Kenneth R. French’s personal website, we can get annual and monthly returns of different portfolios constructed according to their BE/ME values from 1927 to 2020. In order to compare the performances of value and growth investment, we choose the portfolio with the highest 10% BE/ME value as a representative of value stocks, and portfolio with the lowest 10% BE/ME value as a representative of growth stocks.</description>
+    </item>
+    
+    <item>
       <title>Risk-Return of DJIA stocks</title>
       <link>/blogs/blog6/</link>
       <pubDate>Sun, 04 Oct 2020 00:00:00 +0000</pubDate>
@@ -61,16 +71,6 @@ djia_url &amp;lt;- &amp;quot;https://en.wikipedia.org/wiki/Dow_Jones_Industrial_
       
       <guid>/blogs/ipsum/</guid>
       <description>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.</description>
-    </item>
-    
-    <item>
-      <title>Untitled</title>
-      <link>/blogs/blog7/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/blogs/blog7/</guid>
-      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-When you click the Knit button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</description>
     </item>
     
     <item>

@@ -8,7 +8,7 @@
 	<meta name="description" content="Genious">
 	<meta name="author" content="Hui Sheng">
 	<meta name="generator" content="Hugo 0.75.1" />
-	<title>Untitled &middot; Rebecca</title>
+	<title>Value vs Growth stocks &middot; Rebecca</title>
 	<!-- Stylesheets -->
 	
 	<link rel="stylesheet" href="/css/main.css"/>
@@ -40,7 +40,7 @@
 
             <!-- Header -->
     <header id="header" class="alt">
-        <a href="/" class="logo"><strong>Rebecca me</strong> <span>LBS MFA2021</span></a>
+        <a href="/" class="logo"><strong>Rebecca</strong> <span>LBS MFA2021</span></a>
         <nav>
             <a href="#menu">Menu</a>
         </nav>
@@ -77,30 +77,81 @@
                     <section id="one">
                         <div class="inner">
                             <header class="major">
-                                <h1>Untitled</h1>
+                                <h1>Value vs Growth stocks</h1>
                             </header>
                             
+                                <span class="image main"><img src="/img/blogs/valuegrowth.jpg" alt="" /></span>
+                            
                             
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<div id="value-vs-growth-stocks" class="section level1">
+<h1>Value vs Growth Stocks</h1>
+<div id="a-performance-analysis-of-two-different-types-of-stocks" class="section level2">
+<h2>A Performance Analysis of Two Different Types of Stocks</h2>
+<blockquote>
+<p>Until the last decade, it was a conventional consensus, that value investing outperformed growth investing, especially in long-term holding periods.</p>
+</blockquote>
+<p>From <a href="https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html">Kenneth R. French’s personal website</a>, we can get annual and monthly returns of different portfolios constructed according to their BE/ME values from 1927 to 2020. In order to compare the performances of value and growth investment, we choose the portfolio with the highest 10% BE/ME value as a representative of value stocks, and portfolio with the lowest 10% BE/ME value as a representative of growth stocks.</p>
+<p>To begin with, we first look across the entire period (1927-2020), by visualizing annual returns of growth and value stocks.</p>
+<pre class="r"><code>portfolio_annually &lt;-read_csv(here::here(&quot;data&quot;, &quot;Portfolios_Formed_on_BE-ME_annually.csv&quot;))
+
+glimpse(portfolio_annually)</code></pre>
+<pre><code>## Rows: 186
+## Columns: 3
+## $ group         &lt;chr&gt; &quot;growth_stock&quot;, &quot;growth_stock&quot;, &quot;growth_stock&quot;, &quot;grow...
+## $ year          &lt;dbl&gt; 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935,...
+## $ annual_return &lt;dbl&gt; 57.86, 48.57, -26.86, -29.12, -37.53, -14.33, 45.78, ...</code></pre>
+<pre class="r"><code>plot_portfolio_annual &lt;- ggplot(data=portfolio_annually,
+                         aes(x=year,
+                             y=annual_return/100,
+                             color = group))+
+  geom_line()+
+  scale_x_continuous(breaks=c(1930,1940,1950,1960,1970,1980,1990,2000,2010,2020))+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()+
+  labs(title=&quot;Value vs Growth stocks from 1927 to 2020&quot;,
+       x=&quot;Year&quot;,
+       y=&quot;Yearly Return&quot;)+
+  theme_minimal(base_size=5)+
+  coord_fixed(ratio = 25)
+
+ggsave(&quot;portfolio_annual.jpg&quot;,
+      plot=plot_portfolio_annual, 
+       height =10, width=20,)
+
+#knitr::include_graphics(&quot;portfolio_annual.jpg&quot;)
+plot_portfolio_annual</code></pre>
+<p><img src="/blogs/blog7_files/figure-html/plot_for_portfolio_annual-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>From the graph, we can intuitively tell that value stocks earn higher return and growth stocks have lager fluctuation. However, we cannot demonstrate whether the differences in average and volatility of returns are significant, or just result from random errors, until we do t-test and F-test for their mean and standard deviation.</p>
+<pre class="r"><code>t.test(annual_return ~ group, data = portfolio_annually)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  annual_return by group
+## t = -1, df = 161, p-value = 0.2
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -13.64   2.46
+## sample estimates:
+## mean in group growth_stock  mean in group value_stock 
+##                       11.2                       16.8</code></pre>
+<pre class="r"><code>var.test(annual_return ~ group, data = portfolio_annually)</code></pre>
+<pre><code>## 
+##  F test to compare two variances
+## 
+## data:  annual_return by group
+## F = 0.5, num df = 92, denom df = 92, p-value = 2e-04
+## alternative hypothesis: true ratio of variances is not equal to 1
+## 95 percent confidence interval:
+##  0.301 0.686
+## sample estimates:
+## ratio of variances 
+##              0.455</code></pre>
+<p>The t-test is aimed to find out whether the difference in average monthly returns between growth stocks and value stocks is significant. Result shows that the 95 percent confidence interval contains 0 and p-value is 90%, much larger than the confidence level which is 5%. As a result, we don’t reject the null hypothesis that true difference in mean is equal to 0. Although the average return of value stocks is higher in these years, we cannot admit this difference from the angle of statistics.</p>
+<p>On the other hand, the F-test is aimed to discover the difference in variance (volatility) between growth and value stocks. Results show that 95 percent confidence interval is always below 1 and p-value is smaller than 5%, so we reject the null hypothesis and accept the alternative hypothesis that true ratio of their variance is not equal to 1. This means we can confirm that growth stocks have higher volatility and thus high risk than value stocks.</p>
+<p>Combining the above results, we can say that generally from 1927 to 2020, value investment dominated growth investment, because it generated the same return but with lower risk.</p>
 </div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="/blogs/blog7_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
 </div>
 
                         </div>
