@@ -1,28 +1,63 @@
 ---
-title: "Untitled"
-output: html_document
+categories:
+- ""
+- ""
+date: "2020-10-16"
+description: "About me"
+draft: false
+image: picmine.jpg
+keywords: ""
+slug: blog5
+title: About me
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, setup, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(rvest)    # scrape websites
+library(purrr)  
+library(lubridate) #to handle dates
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+# About me
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+Nice to meet you! I'm Hui Sheng from *Suzhou, China*. Currently I'm a master in financial analysis student in **London Business School**. This is my portfolio website. Feel free to contact me!
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# My hobbies
+
+1. **Piano**. I have been playing the piano for more than 15 years and music has become an indispensable part of my life. Chopin is my favorite, whose nocturnes, ballads and etudes deeply impress me.
+
+2. **Traveling**. I spent a lot of time traveling with friends and family. Last summer my parents and I drove our own car from Suzhou to Xinjiang and played around for a month. It was a 10-thousand-kilometer tour and my driving skill improved a lot!
+
+3. **Sports**. Tell me if you also like playing badminton, table-tennis or going climbing!
+
+
+> Here's my favorite nocturne performed by one of my favorite pianists.
+[Chopin - Nocturne op.9 No.2](https://www.youtube.com/watch?v=gUN5ioqlh5U)

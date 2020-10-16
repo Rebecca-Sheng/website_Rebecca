@@ -5,7 +5,7 @@ categories:
 date: "2020-10-04"
 description: "Risk-Return of DJIA stocks"
 draft: false
-image: pic01.jpg
+image: stock4.jpg
 keywords: ""
 slug: blog6
 title: Risk-Return of DJIA stocks
@@ -96,7 +96,8 @@ tickers <- table1 %>%
 
 
 ```{r get_price_data, message=FALSE, warning=FALSE, cache=TRUE}
-# Notice the cache=TRUE argument in the chunk options. Because getting data is time consuming, # cache=TRUE means that once it downloads data, the chunk will not run again next time you knit your Rmd
+# Notice the cache=TRUE argument in the chunk options. Because getting data is time consuming, 
+# cache=TRUE means that once it downloads data, the chunk will not run again next time you knit your Rmd
 
 myStocks <- tickers %>% 
   tq_get(get  = "stock.prices",

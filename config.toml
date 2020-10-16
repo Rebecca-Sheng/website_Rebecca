@@ -37,8 +37,8 @@ disqusShortname = ""
 
   # Navigation Section
   [params.navigation]
-    title = "Rebecca"
-    subtitle = "By HTML5 Up"
+    title = "Rebecca me"
+    subtitle = "LBS MFA2021"
     menu = "Menu"
     # Optional logo as brand stored in img/
     # logo = "logo.png"
@@ -92,16 +92,16 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "DJIA Risk/Return"
-      subtitle = "Risk-Return of DJIA stocks"
-      image = "pic01.jpg"
-      url = "blogs/blog6"
+      title = "About me"
+      subtitle = "Rebecca Sheng"
+      image = "picme.jpg"
+      url = "blogs/blog5"
 
     [[params.tiles.showcase]]
-      title = "Tempus"
-      subtitle = "Feugiat Amet Tempus"
+      title = "DJIA Risk/Return"
+      subtitle = "Risk-Return of DJIA stocks"
       image = "pic02.jpg"
-      url = "blogs/tempus"
+      url = "blogs/blog6"
 
     [[params.tiles.showcase]]
       title = "Magna"

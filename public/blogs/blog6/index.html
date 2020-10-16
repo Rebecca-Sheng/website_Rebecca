@@ -40,7 +40,7 @@
 
             <!-- Header -->
     <header id="header" class="alt">
-        <a href="/" class="logo"><strong>Rebecca</strong> <span>By HTML5 Up</span></a>
+        <a href="/" class="logo"><strong>Rebecca me</strong> <span>LBS MFA2021</span></a>
         <nav>
             <a href="#menu">Menu</a>
         </nav>
@@ -80,7 +80,7 @@
                                 <h1>Risk-Return of DJIA stocks</h1>
                             </header>
                             
-                                <span class="image main"><img src="/img/blogs/pic01.jpg" alt="" /></span>
+                                <span class="image main"><img src="/img/blogs/stock4.jpg" alt="" /></span>
                             
                             
 
@@ -122,7 +122,8 @@ tickers &lt;- table1 %&gt;%
   select(ticker) %&gt;% 
   pull() %&gt;% # pull() gets them as a sting of characters
   c(&quot;SPY&quot;) # and lets us add SPY, the SP500 ETF</code></pre>
-<pre class="r"><code># Notice the cache=TRUE argument in the chunk options. Because getting data is time consuming, # cache=TRUE means that once it downloads data, the chunk will not run again next time you knit your Rmd
+<pre class="r"><code># Notice the cache=TRUE argument in the chunk options. Because getting data is time consuming, 
+# cache=TRUE means that once it downloads data, the chunk will not run again next time you knit your Rmd
 
 myStocks &lt;- tickers %&gt;% 
   tq_get(get  = &quot;stock.prices&quot;,
@@ -136,12 +137,12 @@ glimpse(myStocks) # examine the structure of the resulting data frame</code></pr
 ## Groups: symbol [31]
 ## $ symbol   &lt;chr&gt; &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;M...
 ## $ date     &lt;date&gt; 2000-01-03, 2000-01-04, 2000-01-05, 2000-01-06, 2000-01-0...
-## $ open     &lt;dbl&gt; 48.03125, 46.43750, 45.56250, 47.15625, 50.56250, 50.21875...
-## $ high     &lt;dbl&gt; 48.25000, 47.40625, 48.12500, 51.25000, 51.90625, 51.75000...
-## $ low      &lt;dbl&gt; 47.03125, 45.31250, 45.56250, 47.15625, 49.96875, 50.00000...
-## $ close    &lt;dbl&gt; 47.18750, 45.31250, 46.62500, 50.37500, 51.37500, 51.12500...
+## $ open     &lt;dbl&gt; 48.0, 46.4, 45.6, 47.2, 50.6, 50.2, 50.4, 51.0, 50.7, 50.4...
+## $ high     &lt;dbl&gt; 48.2, 47.4, 48.1, 51.2, 51.9, 51.8, 51.2, 51.8, 50.9, 50.5...
+## $ low      &lt;dbl&gt; 47.0, 45.3, 45.6, 47.2, 50.0, 50.0, 50.2, 50.4, 50.2, 49.5...
+## $ close    &lt;dbl&gt; 47.2, 45.3, 46.6, 50.4, 51.4, 51.1, 50.2, 50.4, 50.4, 49.7...
 ## $ volume   &lt;dbl&gt; 2173400, 2713800, 3699400, 5975800, 4101200, 3863800, 2357...
-## $ adjusted &lt;dbl&gt; 28.05650, 26.94168, 27.72205, 29.95170, 30.54629, 30.39765...</code></pre>
+## $ adjusted &lt;dbl&gt; 28.1, 26.9, 27.7, 30.0, 30.5, 30.4, 29.9, 30.0, 30.0, 29.5...</code></pre>
 <p>Financial performance analysis depend on returns; If I buy a stock today for 100 and I sell it tomorrow for 101.75, my one-day return, assuming no transaction costs, is 1.75%. So given the adjusted closing prices, our first step is to calculate daily and monthly returns.</p>
 <pre class="r"><code>#calculate daily returns
 myStocks_returns_daily &lt;- myStocks %&gt;%
