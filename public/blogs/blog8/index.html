@@ -8,7 +8,7 @@
 	<meta name="description" content="Genious">
 	<meta name="author" content="Hui Sheng">
 	<meta name="generator" content="Hugo 0.75.1" />
-	<title>Untitled &middot; Rebecca</title>
+	<title>CDC Covid case &middot; Rebecca</title>
 	<!-- Stylesheets -->
 	
 	<link rel="stylesheet" href="/css/main.css"/>
@@ -77,31 +77,116 @@
                     <section id="one">
                         <div class="inner">
                             <header class="major">
-                                <h1>Untitled</h1>
+                                <h1>CDC Covid case</h1>
                             </header>
                             
+                                <span class="image main"><img src="/img/blogs/covid.jpg" alt="" /></span>
+                            
                             
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
-</div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="/blogs/blog8_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
-</div>
+<p>Let us revisit the <a href="https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data/vbim-akqf">CDC Covid-19 Case Surveillance Data</a>. There are well over 3 million entries of individual, de-identified patient data.</p>
+<pre class="r"><code># URL link to CDC to download data
+url &lt;- &quot;https://data.cdc.gov/api/views/vbim-akqf/rows.csv?accessType=DOWNLOAD&quot;
+
+covid_data &lt;- vroom(url)%&gt;%
+  clean_names()</code></pre>
+<p>Based on the data, we could produce two graphs that show death % rate:</p>
+<ol style="list-style-type: decimal">
+<li>by age group, sex, and whether the patient had co-morbidities or not</li>
+<li>by age group, sex, and whether the patient was admited to Intensive Care Unit (ICU) or not.</li>
+</ol>
+<p>Before we start the analysis we have to get rid of data entries that don’t give us any information.</p>
+<pre class="r"><code># Cleaning the data set by replacing &quot;Unknown&quot; and &quot;Missing&quot; values with &quot;NA&quot;
+
+covid_data &lt;- covid_data %&gt;% 
+  mutate(icu_yn = case_when(
+    icu_yn == &quot;Unknown&quot; ~ NA_character_,
+    icu_yn == &quot;Missing&quot; ~ NA_character_,
+    TRUE ~ icu_yn
+    ), death_yn = case_when(
+    death_yn == &quot;Unknown&quot; ~ NA_character_,
+    death_yn == &quot;Missing&quot; ~ NA_character_,
+    TRUE ~ death_yn
+    ), medcond_yn = case_when(
+    medcond_yn == &quot;Unknown&quot; ~ NA_character_,
+    medcond_yn == &quot;Missing&quot; ~ NA_character_,
+    TRUE ~ medcond_yn
+    ), sex = case_when(
+    sex == &quot;Unknown&quot; ~ NA_character_,
+    sex == &quot;Missing&quot; ~ NA_character_,
+    sex == &quot;Other&quot; ~ NA_character_,
+    TRUE ~ sex
+    ), age_group = case_when(
+    age_group == &quot;Unknown&quot; ~ NA_character_,
+    age_group == &quot;Missing&quot; ~ NA_character_,
+    TRUE ~ age_group))</code></pre>
+<p>After arranging, we can plot our data to make better inferences:</p>
+<pre class="r"><code># we group the data by icu_yn to determine the effects of COVID across different groups of people
+
+covid_data_grouped_by_medcond &lt;- covid_data %&gt;%
+  group_by(age_group, sex, medcond_yn) %&gt;% 
+  filter(death_yn != is.na(death_yn) &amp; sex != is.na(sex) &amp; medcond_yn != is.na(medcond_yn) &amp; age_group != is.na(age_group)) %&gt;% 
+  summarise(death_rate = count(death_yn==&quot;Yes&quot;) / (count(death_yn==&quot;Yes&quot;) + count(death_yn==&quot;No&quot;))) 
+
+
+# To make our data easier to understand we change the entries in medcond_yn
+
+covid_data_grouped_by_medcond$medcond_yn &lt;- factor(covid_data_grouped_by_medcond$medcond_yn, levels = c(&quot;Yes&quot;, &quot;No&quot;), 
+                  labels = c(&quot;With comorbidities&quot;, &quot;Without comorbidities&quot;))
+
+
+plot_medcond&lt;- ggplot(covid_data_grouped_by_medcond, aes(x=death_rate, y=age_group)) + 
+  geom_col(aes(show.legend = FALSE), fill=&quot;cornflowerblue&quot;, alpha=0.7) + 
+  facet_grid(medcond_yn ~ sex) +
+  theme_bw() +
+  ggtitle(&quot;Covid death % by age group, sex and presence of co-morbidities&quot;) +
+  geom_text(aes(label = round(death_rate * 100,1), hjust = 0.1),
+            size=2) +
+  theme(axis.title.x = element_blank()) + 
+  theme(axis.title.y = element_blank()) +
+  theme(legend.position = &quot;none&quot;) + 
+  labs(caption = &quot;Source: CDC&quot;)+
+  scale_x_continuous(labels = scales::percent)+
+  theme(axis.text.y = element_text(size = 5))+
+  coord_fixed(ratio = 0.04)
+  
+plot_medcond</code></pre>
+<p><img src="/blogs/blog8_files/figure-html/plot_for_medcond-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>It can be seen that there is a clear correlation between age and mortality rate. The same holds true for earlier diagnosis of co-morbidities and mortality rate. Another interesting inference is that there is a higher probability of men dying from COVID than of women.</p>
+<p>In our second plot we look at correlation of covid deaths and admittance to the intensive care unit:</p>
+<pre class="r"><code># we group the data by icu_yn to determine the effects of COVID across different groups of people
+
+covid_data_grouped_by_icu &lt;- covid_data %&gt;%   
+  group_by(age_group, sex, icu_yn) %&gt;% 
+  filter(death_yn != is.na(death_yn) &amp; sex != is.na(sex) &amp; icu_yn != is.na(icu_yn) &amp; age_group != is.na(age_group)) %&gt;% 
+  summarise(death_rate = count(death_yn==&quot;Yes&quot;) / (count(death_yn==&quot;Yes&quot;) + count(death_yn==&quot;No&quot;)))
+
+
+# To make our data easier to understand we change the entries in icu_yn
+
+covid_data_grouped_by_icu$icu_yn &lt;- factor(covid_data_grouped_by_icu$icu_yn, levels = c(&quot;Yes&quot;, &quot;No&quot;), 
+                  labels = c(&quot;Admitted to ICU&quot;, &quot;No ICU&quot;))
+
+
+plot_icu &lt;- ggplot(covid_data_grouped_by_icu, aes(x=death_rate, y=age_group)) + 
+  geom_col(aes(show.legend = FALSE), fill=&quot;coral1&quot;, alpha = 0.7) + 
+  facet_grid(icu_yn ~ sex) +
+  #facet_wrap(~sex + icu_yn, scale=&quot;free&quot;) + 
+  theme_bw() +
+  ggtitle(&quot;Covid death % by age group, sex and whether patient was admitted to ICU&quot;) +
+  geom_text(aes(label = round(death_rate * 100,1), hjust = 0.1),
+            size=2) +
+  theme(axis.title.x = element_blank()) + theme(axis.title.y = element_blank()) +
+  theme(legend.position = &quot;none&quot;) + 
+  labs(caption = &quot;Source: CDC&quot;)+
+  scale_x_continuous(labels = scales::percent)+
+  theme(axis.text.y = element_text(size = 5))+
+  coord_fixed(ratio = 0.04)
+
+plot_icu</code></pre>
+<p><img src="/blogs/blog8_files/figure-html/plot_for_icu-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>Here it can be clearly seen that on average a much higher percentage of people who were admitted to the ICU died. Again we can also see that men and older people are more likely to die.</p>
 
                         </div>
                     </section>
