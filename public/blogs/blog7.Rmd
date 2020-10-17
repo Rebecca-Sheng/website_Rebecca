@@ -77,11 +77,6 @@ plot_portfolio_annual <- ggplot(data=portfolio_annually,
   theme_minimal(base_size=5)+
   coord_fixed(ratio = 25)
 
-ggsave("portfolio_annual.jpg",
-      plot=plot_portfolio_annual, 
-       height =10, width=20,)
-
-#knitr::include_graphics("portfolio_annual.jpg")
 plot_portfolio_annual
 
 ```

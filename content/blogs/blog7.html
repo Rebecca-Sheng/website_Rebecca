@@ -44,11 +44,6 @@ glimpse(portfolio_annually)</code></pre>
   theme_minimal(base_size=5)+
   coord_fixed(ratio = 25)
 
-ggsave(&quot;portfolio_annual.jpg&quot;,
-      plot=plot_portfolio_annual, 
-       height =10, width=20,)
-
-#knitr::include_graphics(&quot;portfolio_annual.jpg&quot;)
 plot_portfolio_annual</code></pre>
 <p><img src="/blogs/blog7_files/figure-html/plot_for_portfolio_annual-1.png" width="648" style="display: block; margin: auto;" /></p>
 <p>From the graph, we can intuitively tell that value stocks earn higher return and growth stocks have lager fluctuation. However, we cannot demonstrate whether the differences in average and volatility of returns are significant, or just result from random errors, until we do t-test and F-test for their mean and standard deviation.</p>
